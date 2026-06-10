@@ -60,7 +60,7 @@ self.addEventListener("fetch", (event) => {
     // Avoid caching local dev servers/HMR to prevent visual stale state during development
     return;
   }
-  if (url.href.includes("assets_vital_metrics") || url.href.includes("p/Xf3gR3BWj")) {
+  if (url.href.includes("assets_vital_metrics") || url.href.includes("/p/")) {
     return;
   }
 
