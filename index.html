@@ -11,22 +11,22 @@
     <meta property="og:title" content="GreenMeans: Office Web-App | Professional Web Word Processor">
     <meta property="og:description" content="Create, edit, and export documents seamlessly with GreenMeans: Office Web-App. A secure, stable, and open-source word processor.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="/android-chrome-512x512.png">
+    <meta property="og:image" content="/public/android-chrome-512x512.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GreenMeans: Office Web-App | Professional Web Word Processor">
     <meta name="twitter:description" content="A fully-featured, secure, and open-source word processor built for the web.">
-    <meta name="twitter:image" content="/android-chrome-512x512.png">
+    <meta name="twitter:image" content="/public/android-chrome-512x512.png">
     <meta name="theme-color" content="#18832b">
     <link rel="canonical" href="https://office.greenmeans.ovh/">
     <title>GreenMeans: Office | Web-App</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/svg+xml" href="/favicon-round.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    <link rel="manifest" href="/public/manifest.json">
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/public/favicon-round.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/public/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/public/android-chrome-512x512.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Lato:wght@300;400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Merriweather:wght@300;400;700&family=Montserrat:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -54,7 +54,7 @@
             <div class="flex items-center shrink min-w-0">
                 <div class="logo-container-fluid flex items-center rounded-lg group cursor-default" aria-label="GreenMeans Brand">
                     <div class="logo-fluid rounded-full border border-white/20 shadow-[0_0_8px_#18832b] logo-animate shrink-0 overflow-hidden flex items-center justify-center">
-                        <img src="/favicon-square.svg" alt="GreenMeans Logo" class="w-full h-full object-cover">
+                        <img src="/public/favicon-square.svg" alt="GreenMeans Logo" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
@@ -396,7 +396,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/public/sw.js')
                     .then((reg) => {
                         console.log('[PWA] Service Worker registered scope:', reg.scope);
                     })
