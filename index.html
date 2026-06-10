@@ -42,6 +42,51 @@
             } catch (e) {}
         })();
     </script>
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://office.greenmeans.ovh/#webapp",
+          "name": "GreenMeans: Office",
+          "alternateName": "GreenMeans Office",
+          "url": "https://office.greenmeans.ovh/",
+          "image": "https://office.greenmeans.ovh/public/android-chrome-512x512.png",
+          "description": "A secure, fully-featured, open-source web-based word processor for creating, editing, and exporting documents seamlessly.",
+          "applicationCategory": "OfficeApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "GBP"
+          },
+          "author": {
+            "@type": "Organization",
+            "@id": "https://greenmeans.ovh/#organization",
+            "name": "GreenMeans",
+            "url": "https://greenmeans.ovh",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://greenmeans.ovh/favicon-round.svg"
+            }
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://office.greenmeans.ovh/#website",
+          "name": "GreenMeans: Office",
+          "url": "https://office.greenmeans.ovh/",
+          "publisher": {
+            "@id": "https://greenmeans.ovh/#organization"
+          },
+          "description": "Secure, stable, and open-source word processor."
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <noscript>
