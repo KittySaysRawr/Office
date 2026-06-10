@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="GreenMeans: Office Web-App - A secure, fully-featured, open-source web-based word processor for creating, editing, and exporting documents seamlessly.">
+    <meta name="keywords" content="word processor, document editor, online office, free word processor, open source editor, FOSS, GreenMeans Office, text editor, markdown editor">
+    <meta name="author" content="GreenMeans">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="GreenMeans: Office Web-App | Professional Web Word Processor">
+    <meta property="og:description" content="Create, edit, and export documents seamlessly with GreenMeans: Office Web-App. A secure, stable, and open-source word processor.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GreenMeans: Office Web-App | Professional Web Word Processor">
+    <meta name="twitter:description" content="A fully-featured, secure, and open-source word processor built for the web.">
+    <meta name="theme-color" content="#18832b">
+    <link rel="canonical" href="https://office.greenmeans.ovh/">
+    <title>GreenMeans: Office | Web-App</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon-round.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Lato:wght@300;400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Merriweather:wght@300;400;700&family=Montserrat:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        (function() {
+            try {
+                var theme = localStorage.getItem('greenmeans_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                if (localStorage.getItem('greenmeans_reduce_motion') === 'true') {
+                    document.documentElement.setAttribute('data-reduce-motion', 'true');
+                }
+            } catch (e) {}
+        })();
+    </script>
+</head>
+<body>
+    <noscript>
+        <div style="background-color: #ef4444; color: white; padding: 1rem; text-align: center; font-weight: bold; position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;">
+            For full functionality and security, GreenMeans: Office Web-App requires JavaScript to be enabled. Please enable JavaScript in your browser settings.
+        </div>
+    </noscript>
+    <header class="app-header">
+        <div class="header-left">
+            <div class="flex items-center shrink min-w-0">
+                <div class="logo-container-fluid flex items-center rounded-lg group cursor-default" aria-label="GreenMeans Brand">
+                    <div class="logo-fluid rounded-full border border-white/20 shadow-[0_0_8px_#18832b] logo-animate shrink-0 overflow-hidden flex items-center justify-center">
+                        <img src="/favicon-square.svg" alt="GreenMeans Logo" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+            <div class="brand-container">
+                <div class="wordmark">GreenMeans: Office</div>
+                <div class="beta-tag">Beta v0.1</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button id="btn-settings" class="btn-secondary" aria-label="Settings" aria-haspopup="dialog" aria-controls="settings-modal" aria-expanded="false">
+                <i data-lucide="settings" width="16" height="16"></i>
+                Settings
+            </button>
+            <button id="btn-menu-toggle" class="btn-icon header-menu-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="header-menu-content">
+                <i data-lucide="menu" width="24" height="24"></i>
+            </button>
+            <div id="header-menu-content" class="header-menu-content">
+                <button id="btn-new-doc" class="btn-secondary" aria-label="New Document">New Document</button>
+                <button id="btn-print" class="btn-secondary" aria-label="Print Document">Print</button>
+                <div class="dropdown-container">
+                    <button id="btn-save-menu" class="btn-primary" aria-label="Save Options" aria-haspopup="true" aria-expanded="false">Save As...</button>
+                    <div id="save-dropdown" class="dropdown-menu hidden save-accordion" role="menu">
+                        <details class="accordion-item" name="save-options">
+                            <summary>Save as Plain Text (.txt)</summary>
+                            <div class="accordion-desc">
+                                <p>Raw text output. Strips all images, tables, headings and formatting.</p>
+                                <button role="menuitem" class="btn-download" data-export="txt">Download .txt</button>
+                            </div>
+                        </details>
+                        <details class="accordion-item" name="save-options">
+                            <summary>Save as HTML (.html)</summary>
+                            <div class="accordion-desc">
+                                <p>Complete web page export including embedded images, styling, and structure.</p>
+                                <button role="menuitem" class="btn-download" data-export="html">Download .html</button>
+                            </div>
+                        </details>
+                        <details class="accordion-item" name="save-options">
+                            <summary>Save as Markdown (.md)</summary>
+                            <div class="accordion-desc">
+                                <p>Lightweight markup language. Converts headings, lists, and basic formatting.</p>
+                                <button role="menuitem" class="btn-download" data-export="md">Download .md</button>
+                            </div>
+                        </details>
+                        <details class="accordion-item" name="save-options">
+                            <summary>Save as Rich Text (.rtf)</summary>
+                            <div class="accordion-desc">
+                                <p>Basic cross-platform document format. Preserves bold, italic, and paragraphs.</p>
+                                <button role="menuitem" class="btn-download" data-export="rtf">Download .rtf</button>
+                            </div>
+                        </details>
+                        <details class="accordion-item" name="save-options">
+                            <summary>Save as Word (.docx)</summary>
+                            <div class="accordion-desc">
+                                <p>Microsoft Word document. Complete compatibility with Word, Pages, and Google Docs.</p>
+                                <button role="menuitem" class="btn-download" data-export="docx">Download .docx</button>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="app-toolbar" aria-label="Text Formatting">
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-command="undo" aria-label="Undo" title="Undo (Ctrl+Z)"><i data-lucide="undo" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="redo" aria-label="Redo" title="Redo (Ctrl+Y)"><i data-lucide="redo" width="18" height="18"></i></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-command="bold" aria-label="Bold" title="Bold (Ctrl+B)"><i data-lucide="bold" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="italic" aria-label="Italic" title="Italic (Ctrl+I)"><i data-lucide="italic" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="underline" aria-label="Underline" title="Underline (Ctrl+U)"><i data-lucide="underline" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="strikeThrough" aria-label="Strikethrough" title="Strikethrough"><i data-lucide="strikethrough" width="18" height="18"></i></button>
+            <button id="btn-heading-dec" class="toolbar-btn" aria-label="Decrease Heading Level" title="Decrease Heading Level"><i data-lucide="chevron-down" width="18" height="18"></i></button>
+            <button id="btn-heading-inc" class="toolbar-btn" aria-label="Increase Heading Level" title="Increase Heading Level"><i data-lucide="chevron-up" width="18" height="18"></i></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <select id="font-family" aria-label="Font Family" class="toolbar-select" style="max-width: 130px;">
+                <option value="" disabled selected>Font</option>
+                <optgroup label="Sans Serif">
+                    <option value="Inter, sans-serif" style="font-family: Inter, sans-serif;">Inter</option>
+                    <option value="Arial, sans-serif" style="font-family: Arial, sans-serif;">Arial</option>
+                    <option value="'Open Sans', sans-serif" style="font-family: 'Open Sans', sans-serif;">Open Sans</option>
+                    <option value="Roboto, sans-serif" style="font-family: Roboto, sans-serif;">Roboto</option>
+                    <option value="Montserrat, sans-serif" style="font-family: Montserrat, sans-serif;">Montserrat</option>
+                    <option value="Lato, sans-serif" style="font-family: Lato, sans-serif;">Lato</option>
+                    <option value="Tahoma, sans-serif" style="font-family: Tahoma, sans-serif;">Tahoma</option>
+                    <option value="Verdana, sans-serif" style="font-family: Verdana, sans-serif;">Verdana</option>
+                </optgroup>
+                <optgroup label="Serif">
+                    <option value="Georgia, serif" style="font-family: Georgia, serif;">Georgia</option>
+                    <option value="'Times New Roman', serif" style="font-family: 'Times New Roman', serif;">Times New Roman</option>
+                    <option value="'Playfair Display', serif" style="font-family: 'Playfair Display', serif;">Playfair Display</option>
+                    <option value="Lora, serif" style="font-family: Lora, serif;">Lora</option>
+                    <option value="Merriweather, serif" style="font-family: Merriweather, serif;">Merriweather</option>
+                </optgroup>
+                <optgroup label="Display / Mono">
+                    <option value="Impact, sans-serif" style="font-family: Impact, sans-serif;">Impact</option>
+                    <option value="Oswald, sans-serif" style="font-family: Oswald, sans-serif;">Oswald</option>
+                    <option value="'JetBrains Mono', monospace" style="font-family: 'JetBrains Mono', monospace;">JetBrains Mono</option>
+                    <option value="'Courier New', monospace" style="font-family: 'Courier New', monospace;">Courier New</option>
+                </optgroup>
+            </select>
+            <select id="font-size" aria-label="Font Size" class="toolbar-select" style="max-width: 70px;">
+                <option value="" disabled selected>Size</option>
+                <option value="1">Small</option>
+                <option value="2">Normal</option>
+                <option value="3">Medium</option>
+                <option value="4">Large</option>
+                <option value="5">Extra Large</option>
+                <option value="6">Huge</option>
+                <option value="7">Giant</option>
+            </select>
+            <select id="format-block" aria-label="Format Text" class="toolbar-select" style="max-width: 100px;">
+                <option value="P">Paragraph</option>
+                <option value="H1">Heading 1</option>
+                <option value="H2">Heading 2</option>
+                <option value="H3">Heading 3</option>
+                <option value="H4">Heading 4</option>
+                <option value="BLOCKQUOTE">Quote</option>
+            </select>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-command="justifyLeft" aria-label="Align Left" title="Align Left"><i data-lucide="align-left" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="justifyCenter" aria-label="Align Centre" title="Align Centre"><i data-lucide="align-center" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="justifyRight" aria-label="Align Right" title="Align Right"><i data-lucide="align-right" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="justifyFull" aria-label="Justify" title="Justify"><i data-lucide="align-justify" width="18" height="18"></i></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <button class="toolbar-btn" data-command="insertUnorderedList" aria-label="Unordered List" title="Unordered List"><i data-lucide="list" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="insertOrderedList" aria-label="Ordered List" title="Ordered List"><i data-lucide="list-ordered" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="outdent" aria-label="Decrease Indent" title="Decrease Indent (Shift+Tab)"><i data-lucide="outdent" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="indent" aria-label="Increase Indent" title="Increase Indent (Tab)"><i data-lucide="indent" width="18" height="18"></i></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <div class="dropdown-container">
+                <button id="btn-insert-table" class="toolbar-btn" aria-label="Insert Table" title="Insert Table" aria-haspopup="true" aria-expanded="false"><i data-lucide="table-2" width="18" height="18"></i></button>
+                <div id="table-picker" class="table-picker hidden" role="menu">
+                    <div class="table-grid"></div>
+                    <div class="table-size-label">0 × 0</div>
+                </div>
+            </div>
+            <button id="btn-insert-image" class="toolbar-btn" aria-label="Insert Image" title="Insert Image"><i data-lucide="image" width="18" height="18"></i></button>
+            <input type="file" id="image-upload" accept="image/*" class="hidden" aria-label="Upload Image File">
+            <button id="btn-insert-link" class="toolbar-btn" aria-label="Insert Link" title="Insert Link (Ctrl+K)"><i data-lucide="link" width="18" height="18"></i></button>
+            <button class="toolbar-btn" data-command="insertHorizontalRule" aria-label="Insert Divider" title="Divider"><i data-lucide="minus" width="20" height="20"></i></button>
+            <button id="btn-insert-html" class="toolbar-btn" aria-label="Insert HTML Code" title="Insert HTML">&lt;/&gt;</button>
+            <button class="toolbar-btn btn-clear-format" data-command="removeFormat" aria-label="Remove Formatting" title="Clear Formatting">
+                <i data-lucide="remove-formatting" width="18" height="18"></i>
+            </button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group color-pickers">
+            <label class="color-picker-label" title="Text Colour" for="text-color">
+                <i data-lucide="baseline" width="18" height="18"></i>
+                <span class="sr-only">Text Colour</span>
+                <input type="color" id="text-color" aria-label="Text Colour Selector">
+            </label>
+            <label class="color-picker-label" title="Highlight Colour" for="bg-color">
+                <i data-lucide="highlighter" width="18" height="18"></i>
+                <span class="sr-only">Highlight Colour</span>
+                <input type="color" id="bg-color" aria-label="Highlight Colour Selector" value="#ffffff">
+            </label>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group flex-right">
+            <button id="btn-find-replace" class="toolbar-btn" aria-label="Find and Replace" title="Find &amp; Replace (Ctrl+F)"><i data-lucide="search" width="18" height="18"></i></button>
+            <button id="btn-hints" class="toolbar-btn" aria-label="Hints and Tips" title="Hints &amp; Tips">
+                <i data-lucide="info" width="18" height="18"></i>
+            </button>
+        </div>
+    </nav>
+    <div class="app-view">
+        <main class="app-main">
+            <div class="document-container">
+                <h1 id="document-title" class="document-title" contenteditable="true" spellcheck="false" aria-label="Document Title" data-placeholder="Untitled Document"></h1>
+                <div id="document-wrapper" class="document-wrapper">
+                    <div class="editor-page" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Document Content" data-placeholder="Start typing your document here..."><p><br></p></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Hints & Tips Sidebar -->
+        <aside id="hints-sidebar" class="hints-sidebar" aria-label="Editor Hints and Tips" aria-expanded="false" tabindex="-1">
+            <div class="hints-header">
+                <h2>Hints & Tips</h2>
+                <button id="btn-close-hints" class="btn-icon" aria-label="Close Hints Sidebar">
+                    <i data-lucide="x" width="20" height="20"></i>
+                </button>
+            </div>
+            <div class="hints-content">
+                <section class="hint-section">
+                    <h3>Keyboard Shortcuts</h3>
+                    <ul class="hint-list">
+                        <li><kbd>Ctrl</kbd>+<kbd>B</kbd> <span>Bold</span></li>
+                        <li><kbd>Ctrl</kbd>+<kbd>I</kbd> <span>Italic</span></li>
+                        <li><kbd>Ctrl</kbd>+<kbd>U</kbd> <span>Underline</span></li>
+                        <li><kbd>Ctrl</kbd>+<kbd>K</kbd> <span>Insert Link</span></li>
+                        <li><kbd>Ctrl</kbd>+<kbd>S</kbd> <span>Save (Status updates)</span></li>
+                        <li><kbd>Ctrl</kbd>+<kbd>F</kbd> <span>Find and Replace</span></li>
+                        <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> <span>Undo</span></li>
+                        <li><kbd>Ctrl</kbd>+<kbd>Y</kbd> <span>Redo</span></li>
+                    </ul>
+                </section>
+                <section class="hint-section">
+                    <h3>Images & Tables</h3>
+                    <p>Click on an image or inside a table. A mini contextual toolbar will appear to quickly manage alignment or add/remove rows/columns.</p>
+                </section>
+                <section class="hint-section">
+                    <h3>Formatting</h3>
+                    <p>Use the formatting toolbar at the top to change alignment, colors, list styles, and headings.</p>
+                </section>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="app-status-bar">
+        <div class="status-left">
+            <span id="save-status">All changes saved</span>
+        </div>
+        <div class="status-right">
+            <span id="word-count">Words: 0</span> ·
+            <span id="char-count">Characters: 0</span> ·
+            <span id="char-count-no-space">Characters (no spaces): 0</span> ·
+            <span id="paragraph-count">Paragraphs: 0</span> ·
+            <span id="reading-time">Reading time: ~0 min</span>
+        </div>
+    </footer>
+
+    <!-- Find & Replace Floating Panel -->
+    <div id="find-replace-panel" class="find-replace-panel hidden" role="dialog" aria-modal="false" aria-label="Find and Replace">
+        <button id="btn-close-find" class="close-btn" aria-label="Close"><i data-lucide="x" width="16" height="16"></i></button>
+        <div class="fr-row">
+            <input type="text" id="find-input" placeholder="Find..." aria-label="Find Text">
+            <span id="find-count" class="find-count">0 of 0</span>
+        </div>
+        <div class="fr-row">
+            <input type="text" id="replace-input" placeholder="Replace with..." aria-label="Replace Text">
+        </div>
+        <div class="fr-controls">
+            <label class="case-label" for="match-case"><input type="checkbox" id="match-case"> Case</label>
+            <div class="fr-actions">
+                <button id="btn-find-prev" class="btn-xs" aria-label="Find Previous"><i data-lucide="chevron-up" width="14" height="14"></i></button>
+                <button id="btn-find-next" class="btn-xs" aria-label="Find Next"><i data-lucide="chevron-down" width="14" height="14"></i></button>
+                <button id="btn-replace" class="btn-sm" aria-label="Replace Selected Match">Replace</button>
+                <button id="btn-replace-all" class="btn-sm" aria-label="Replace All Matches">All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insert HTML Panel -->
+    <div id="insert-html-panel" class="find-replace-panel hidden" style="width: 400px;" role="dialog" aria-modal="false" aria-label="Insert HTML">
+        <button id="btn-close-html" class="close-btn" aria-label="Close"><i data-lucide="x" width="16" height="16"></i></button>
+        <div style="margin-bottom:0.5rem; font-weight:500;">Insert HTML Code</div>
+        <textarea id="html-input" class="html-textarea" rows="5" placeholder="<p>Insert your HTML here...</p>" aria-label="HTML Code Input"></textarea>
+        <div style="text-align:right;">
+            <button id="btn-confirm-html" class="btn-primary" style="padding:0.4rem 1rem;" aria-label="Confirm HTML Insertion">Insert</button>
+        </div>
+    </div>
+
+    <!-- Table context menu mini toolbar -->
+    <div id="table-toolbar" class="mini-toolbar hidden" role="toolbar" aria-label="Table Layout Actions">
+        <button data-action="row-above" title="Add Row Above" aria-label="Add Row Above"><i data-lucide="arrow-up-to-line" width="16" height="16"></i></button>
+        <button data-action="row-below" title="Add Row Below" aria-label="Add Row Below"><i data-lucide="arrow-down-to-line" width="16" height="16"></i></button>
+        <button data-action="col-left" title="Add Column Left" aria-label="Add Column Left"><i data-lucide="arrow-left-to-line" width="16" height="16"></i></button>
+        <button data-action="col-right" title="Add Column Right" aria-label="Add Column Right"><i data-lucide="arrow-right-to-line" width="16" height="16"></i></button>
+        <div class="toolbar-divider"></div>
+        <button data-action="del-row" title="Delete Row" aria-label="Delete Row"><i data-lucide="trash-2" width="16" height="16"></i></button>
+        <button data-action="del-col" title="Delete Column" aria-label="Delete Column"><i data-lucide="trash-2" width="16" height="16"></i></button>
+        <button data-action="del-table" title="Delete Table" aria-label="Delete Table"><i data-lucide="table-2" width="16" height="16"></i></button>
+    </div>
+
+    <!-- New Doc Modal -->
+    <div id="new-doc-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="new-doc-modal-title">
+        <div class="modal-dialog">
+            <h2 id="new-doc-modal-title" class="modal-title">Create New Document</h2>
+            <div class="modal-body">
+                Are you sure you want to create a new document? Your current document will be wiped. Please ensure you have downloaded and saved a copy first.
+            </div>
+            <div class="modal-actions">
+                <button id="btn-modal-cancel" class="btn-secondary" aria-label="Cancel Creating New Document">Cancel</button>
+                <button id="btn-modal-confirm" class="btn-primary" style="background:#ef4444;box-shadow: 0 0 16px #ef4444;" aria-label="Confirm Document Wipe and Create New">Wipe & Create New</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+        <div class="modal-dialog">
+            <button id="btn-close-settings-x" class="close-btn" aria-label="Close"><i data-lucide="x" width="16" height="16"></i></button>
+            <h2 id="settings-modal-title" class="modal-title">Settings</h2>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="settings-group">
+                    <label for="theme-select" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Theme</label>
+                    <select id="theme-select" class="toolbar-select" style="width: 100%; padding: 0.5rem;" aria-label="Select Theme">
+                        <option value="dark">Dark (Default)</option>
+                        <option value="light">Light</option>
+                        <option value="night">Night (Blue)</option>
+                    </select>
+                </div>
+                <div class="settings-group" style="display: flex; align-items: center; justify-content: space-between;">
+                    <label for="reduce-motion-toggle" style="font-weight: 500; cursor: pointer;">Reduce Motion</label>
+                    <input type="checkbox" id="reduce-motion-toggle" class="toggle-checkbox" aria-label="Toggle Reduce Motion">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="btn-settings-close" class="btn-primary" aria-label="Close Settings">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image resizer -->
+    <div id="image-resizer" class="image-resizer hidden">
+        <div class="resize-handle resizer-nw" data-dir="nw"></div>
+        <div class="resize-handle resizer-ne" data-dir="ne"></div>
+        <div class="resize-handle resizer-sw" data-dir="sw"></div>
+        <div class="resize-handle resizer-se" data-dir="se"></div>
+    </div>
+
+    <!-- Internal Analytics -->
+    <script defer src="https://info.greenmeans.ovh/assets_vital_metrics" data-website-id="4c3e06af-c29d-41b4-aa97-e6682679f55d"></script>
+    <noscript><img src="https://info.greenmeans.ovh/p/Xf3gR3BWj" alt="" role="presentation" aria-hidden="true" width="1" height="1" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;" loading="eager" /></noscript>
+
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        });
+    </script>
+    <script src="/script.js" type="module"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => {
+                        console.log('[PWA] Service Worker registered scope:', reg.scope);
+                    })
+                    .catch((err) => {
+                        console.warn('[PWA] Service Worker registration failed:', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
