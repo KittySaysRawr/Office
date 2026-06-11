@@ -507,7 +507,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, .editor-page:fo
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem 1rem 1rem;
     display: flex;
     justify-content: center;
     -webkit-overflow-scrolling: touch;
@@ -520,7 +520,6 @@ button:focus-visible, input:focus-visible, select:focus-visible, .editor-page:fo
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-bottom: 8rem;
 }
 
 .document-wrapper {
@@ -564,13 +563,14 @@ button:focus-visible, input:focus-visible, select:focus-visible, .editor-page:fo
     font-family: var(--font-doc);
     font-size: 16px;
     line-height: 1.6;
-    padding: 6rem;
+    padding: 3rem 4rem;
     box-shadow: 0 4px 24px var(--color-shadow);
     border-radius: 8px;
     width: 100%;
     max-width: 816px;
     height: 1056px;
     margin: 0;
+    margin-bottom: 1rem; /* Buffer at the bottom of the page to clear the status bar */
     outline: none;
     flex-shrink: 0;
     overflow: hidden;
@@ -676,14 +676,50 @@ button:focus-visible, input:focus-visible, select:focus-visible, .editor-page:fo
 .app-status-bar {
     background: var(--color-canvas-bg);
     border-top: 1px solid var(--color-border-subtle);
-    height: 32px;
+    min-height: 32px;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.5rem;
+    padding: 0.25rem 1.5rem;
     font-size: 0.75rem;
     color: var(--color-canvas-text);
     flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.status-left {
+    flex-shrink: 0;
+}
+
+.status-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.status-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+#toggle-status-bar {
+    margin-left: 0.25rem;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-item:not(:last-of-type)::after {
+    content: " \00B7";
+    margin-left: 0.25rem;
+    color: var(--color-text-muted);
 }
 
 /* === MODALS & PANELS === */
@@ -1002,9 +1038,9 @@ mark.current-match {
         padding: 0.5rem;
         overflow-x: auto;
     }
-    .status-right {
-        display: none;
-    }
+    .app-status-bar { }
+    .status-right { }
+    .status-item:not(:last-of-type)::after { }
     
     .header-menu-toggle {
         display: flex;
@@ -1027,6 +1063,30 @@ mark.current-match {
     
     .header-menu-toggle:focus-visible {
         outline: 2px solid var(--color-primary);
+    }
+
+    /* Mobile Status Bar - only for very small screens */
+    @media (max-width: 600px) {
+        .app-status-bar {
+            font-size: 0.65rem;
+            padding: 0 0.5rem;
+            justify-content: space-between;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .status-right {
+            justify-content: flex-end;
+            gap: 0.35rem;
+            flex-wrap: nowrap;
+        }
+        .status-item:not(:last-of-type)::after {
+            display: none;
+        }
+        .status-left {
+            margin-right: 0.5rem;
+        }
     }
 
     .header-menu-content {
