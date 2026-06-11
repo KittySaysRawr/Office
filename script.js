@@ -36,6 +36,8 @@ window.addEventListener('unhandledrejection', function(event) {
     const formatBlockSelect = document.getElementById('format-block');
     const fontFamilySelect = document.getElementById('font-family');
     const fontSizeSelect = document.getElementById('font-size');
+    const btnOpenDoc = document.getElementById('btn-open-doc');
+    const fileOpenInput = document.getElementById('file-open-input');
     const btnNewDoc = document.getElementById('btn-new-doc');
     const btnPrint = document.getElementById('btn-print');
     const menuToggleBtn = document.getElementById('btn-menu-toggle');
@@ -1064,6 +1066,87 @@ ${combinedHtml}
         newDocModal.classList.remove('hidden');
     });
 
+    btnOpenDoc.addEventListener('click', () => {
+        if (editor.innerText.trim().length > 0 && !confirm("Opening a document will replace your current content. Continue?")) {
+            return;
+        }
+        fileOpenInput.value = '';
+        fileOpenInput.click();
+    });
+
+    fileOpenInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        let title = file.name.replace(/\.[^/.]+$/, ""); // fallback title
+
+        const processContent = (newHtml) => {
+            editor.innerHTML = `<div class="editor-page" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Document Content">${newHtml}</div>`;
+            docTitle.innerText = title;
+            document.title = `${title} - GreenMeans: Docs`;
+            initPages();
+            updateWordCount();
+            triggerAutosave();
+            saveHistoryState();
+            if (headerMenuContent) headerMenuContent.classList.remove('active');
+            if (menuToggleBtn) menuToggleBtn.setAttribute('aria-expanded', 'false');
+        };
+
+        if (file.name.endsWith('.docx')) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const arrayBuffer = evt.target.result;
+                if (window.mammoth) {
+                    mammoth.convertToHtml({arrayBuffer: arrayBuffer})
+                        .then(function(result){
+                            processContent(result.value);
+                        })
+                        .catch(function(err){
+                            alert("Error parsing .docx file.");
+                        });
+                } else {
+                    alert("DOCX parser not loaded.");
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const content = evt.target.result;
+                let newHtml = '';
+                if (file.name.endsWith('.html')) {
+                    const parser = new DOMParser();
+                    const tempDoc = parser.parseFromString(content, 'text/html');
+                    const titleTag = tempDoc.querySelector('title');
+                    if (titleTag && titleTag.innerText) {
+                        const parsedTitle = titleTag.innerText.replace(' - GreenMeans: Docs', '').trim();
+                        if (parsedTitle) title = parsedTitle;
+                    }
+                    const h1 = tempDoc.body.querySelector('h1');
+                    if (h1 && h1.innerText === title) {
+                        h1.remove(); // remove the exported title header
+                    }
+                    newHtml = tempDoc.body.innerHTML;
+                } else if (file.name.endsWith('.rtf')) {
+                    // Crude fallback for RTF text extraction
+                    let text = content.replace(/\\[a-z]+[0-9]* ?/gi, '')
+                                      .replace(/[{}]/g, '')
+                                      .trim();
+                    const escaped = escapeXml(text);
+                    newHtml = escaped.split('\n').map(p => `<p>${p || '<br>'}</p>`).join('');
+                } else if (file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+                    const escaped = escapeXml(content);
+                    newHtml = escaped.split('\n').map(p => `<p>${p || '<br>'}</p>`).join('');
+                } else {
+                    alert("Unsupported file format. Please upload .html, .txt, .md, .rtf, or .docx");
+                    return;
+                }
+                processContent(newHtml || "<p><br></p>");
+            };
+            reader.readAsText(file);
+        }
+    });
+
     btnModalCancel.addEventListener('click', () => {
         newDocModal.classList.add('hidden');
     });
@@ -1092,7 +1175,7 @@ ${combinedHtml}
     const settingsModal = document.getElementById('settings-modal');
     const btnSettingsClose = document.getElementById('btn-settings-close');
     const btnCloseSettingsX = document.getElementById('btn-close-settings-x');
-    const themeSelect = document.getElementById('theme-select');
+    const themeInputs = document.querySelectorAll('.theme-slider-input');
     const reduceMotionToggle = document.getElementById('reduce-motion-toggle');
 
     // Load settings from localStorage
@@ -1100,7 +1183,18 @@ ${combinedHtml}
     const savedReduceMotion = localStorage.getItem('greenmeans_reduce_motion') === 'true';
 
     document.documentElement.setAttribute('data-theme', savedTheme);
-    themeSelect.value = savedTheme;
+    themeInputs.forEach(input => {
+        if (input.value === savedTheme) {
+            input.checked = true;
+        }
+        input.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                const theme = e.target.value;
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('greenmeans_theme', theme);
+            }
+        });
+    });
 
     if (savedReduceMotion) {
         document.documentElement.setAttribute('data-reduce-motion', 'true');
@@ -1125,14 +1219,6 @@ ${combinedHtml}
         }
     }
 
-    if (themeSelect) {
-        themeSelect.addEventListener('change', (e) => {
-            const theme = e.target.value;
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('greenmeans_theme', theme);
-        });
-    }
-
     if (reduceMotionToggle) {
         reduceMotionToggle.addEventListener('change', (e) => {
             const isReduced = e.target.checked;
@@ -1142,6 +1228,22 @@ ${combinedHtml}
                 document.documentElement.removeAttribute('data-reduce-motion');
             }
             localStorage.setItem('greenmeans_reduce_motion', isReduced);
+        });
+    }
+
+    // === STATUS BAR TOGGLE ===
+    const btnHideStatusBar = document.getElementById('toggle-status-bar');
+    const btnShowStatusBar = document.getElementById('show-status-bar');
+    const appBar = document.getElementById('app-status-bar');
+
+    if (btnHideStatusBar && btnShowStatusBar && appBar) {
+        btnHideStatusBar.addEventListener('click', () => {
+            appBar.style.display = 'none';
+            btnShowStatusBar.style.display = 'flex';
+        });
+        btnShowStatusBar.addEventListener('click', () => {
+            appBar.style.display = 'flex';
+            btnShowStatusBar.style.display = 'none';
         });
     }
 
