@@ -1768,12 +1768,16 @@ ${combinedHtml}
         const pCount = editor.querySelectorAll('p, h1, h2, h3, li').length || (text ? 1 : 0);
         const readMins = Math.max(1, Math.ceil(words / 200));
 
-        wordCountEl.innerText = `Words: ${words}`;
-        charCountEl.innerText = `Characters: ${chars}`;
-        charNoSpaceEl.innerText = `Characters (no spaces): ${noSpaceChars}`;
-        paraCountEl.innerText = `Paragraphs: ${pCount}`;
-        readTimeEl.innerText = `Reading time: ~${readMins} min`;
+        const isSmall = window.innerWidth <= 600;
+
+        wordCountEl.innerText = isSmall ? `W: ${words}` : `Words: ${words}`;
+        charCountEl.innerText = isSmall ? `C: ${chars}` : `Characters: ${chars}`;
+        charNoSpaceEl.innerText = isSmall ? `CNS: ${noSpaceChars}` : `Characters (no spaces): ${noSpaceChars}`;
+        paraCountEl.innerText = isSmall ? `P: ${pCount}` : `Paragraphs: ${pCount}`;
+        readTimeEl.innerText = isSmall ? `~${readMins}m` : `Reading time: ~${readMins} min`;
     }
+
+    window.addEventListener('resize', updateWordCountDebounced);
 
     // === KEYBOARD SHORTCUTS ===
     document.addEventListener('keydown', (e) => {
